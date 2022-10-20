@@ -1,21 +1,29 @@
 package com.personal.finance.budget.service;
 
+import com.personal.finance.budget.controller.request.UserRequest;
+import com.personal.finance.budget.controller.response.UserResponse;
+import com.personal.finance.budget.mapper.UserMapper;
 import com.personal.finance.budget.model.User;
 import com.personal.finance.budget.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 @Service
+@AllArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserMapper userMapper;
 
-    public Mono<User> save(User user) {
-        return userRepository.save(user);
+
+    public Mono<UserResponse> save(UserRequest userRequest) {
+        User user = userMapper.toUser(userRequest);
+        return Mono.just(userMapper.toUser(userRequest))
+                .flatMap(userRepository::save)
+                .map(userMapper::toUserResponse);
+
     }
 
     public Mono<Void> delete(String userId) {
@@ -27,6 +35,6 @@ public class UserService {
     }
 
     public Mono<User> findByEmail(String email) {
-        return Mono.empty();
+        return userRepository.findByEmail(email);
     }
 }

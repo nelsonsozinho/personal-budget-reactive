@@ -4,7 +4,5 @@ create table public."budget_user"
     email    varchar(200),
     password text,
     enabled  bool,
-    user_id uuid
-        constraint user_id
-            primary key
+    user_id uuid default gen_random_uuid() PRIMARY KEY
 );

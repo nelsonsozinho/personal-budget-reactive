@@ -1,5 +1,7 @@
 package com.personal.finance.budget.controller;
 
+import com.personal.finance.budget.controller.request.UserRequest;
+import com.personal.finance.budget.controller.response.UserResponse;
 import com.personal.finance.budget.model.User;
 import com.personal.finance.budget.service.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -16,17 +18,22 @@ public class UserController {
     }
 
     @PostMapping
-    public Mono<User> saveEmployee(@RequestBody User user) {
+    public Mono<UserResponse> saveUser(@RequestBody UserRequest user) {
         return userService.save(user);
     }
 
     @GetMapping("/{id}")
-    public Mono<User> getEmployee(@PathVariable("id") String userId) {
+    public Mono<User> getUser(@PathVariable("id") String userId) {
         return userService.findById(userId);
     }
 
+    @GetMapping("/email/{email}")
+    public Mono<User> getUserByEmail(@PathVariable("email") String email) {
+        return userService.findByEmail(email);
+    }
+
     @DeleteMapping("/{id}")
-    public Mono<Void> deleteEmployee(@PathVariable("id") String employeeId) {
+    public Mono<Void> deleteUser(@PathVariable("id") String employeeId) {
         return  userService.delete(employeeId);
     }
 

@@ -19,7 +19,6 @@ public class UserService {
 
 
     public Mono<UserResponse> save(UserRequest userRequest) {
-        User user = userMapper.toUser(userRequest);
         return Mono.just(userMapper.toUser(userRequest))
                 .flatMap(userRepository::save)
                 .map(userMapper::toUserResponse);

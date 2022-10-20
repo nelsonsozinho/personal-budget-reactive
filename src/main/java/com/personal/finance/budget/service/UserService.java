@@ -14,7 +14,6 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-
     public Mono<User> save(User user) {
         return userRepository.save(user);
     }

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-//@Configuration
+@Configuration
 public class FlywayConfiguration {
 
     private final String url;
@@ -13,7 +13,7 @@ public class FlywayConfiguration {
     private final String password;
 
     public FlywayConfiguration(@Value("${spring.flyway.url}") final String url,
-                          @Value("${spring.flyway.username}") final String user,
+                          @Value("${spring.flyway.user}") final String user,
                           @Value("${spring.flyway.password}") final String password) {
         this.url = url;
         this.user = user;

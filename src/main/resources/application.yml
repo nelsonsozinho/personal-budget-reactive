@@ -15,7 +15,7 @@ spring:
     username: postgres
     password: postgres
   flyway:
-    url: jdbc:postgres://localhost:5432/budget
+    url: jdbc:postgresql://localhost:5432/budget
     user: postgres
     password: postgres
     validate-on-migrate: true

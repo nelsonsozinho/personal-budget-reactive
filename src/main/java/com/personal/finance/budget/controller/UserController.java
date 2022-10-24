@@ -32,12 +32,12 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public Mono<User> getUser(@PathVariable("id") String userId) {
+    public Mono<UserResponse> getUser(@PathVariable("id") String userId) {
         return userService.findById(userId);
     }
 
     @GetMapping("/email/{email}")
-    public Mono<User> getUserByEmail(@PathVariable("email") String email) {
+    public Mono<UserResponse> getUserByEmail(@PathVariable("email") String email) {
         return userService.findByEmail(email);
     }
 

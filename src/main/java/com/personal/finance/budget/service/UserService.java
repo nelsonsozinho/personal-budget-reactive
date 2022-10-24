@@ -10,9 +10,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
-import java.util.Optional;
-
 @Service
 @AllArgsConstructor
 public class UserService {
@@ -23,7 +20,6 @@ public class UserService {
 
 
     public Mono<UserResponse> save(UserRequest userRequest) {
-
         return userRepository.findByEmail(userRequest.getEmail())
                 .flatMap(__ -> Mono.error(new ResourceNotFoundException("User is already registered")))
                 .switchIfEmpty(Mono.defer(() -> userRepository.save(userMapper.toUser(userRequest))))
@@ -32,14 +28,20 @@ public class UserService {
     }
 
     public Mono<Void> delete(String userId) {
-        return Mono.empty();
+        return userRepository.findById(userId)
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("User not found")))
+                .flatMap(user -> userRepository.deleteById(user.getUserId().toString()));
     }
 
-    public Mono<User> findById(String id) {
-        return userRepository.findById(id);
+    public Mono<UserResponse> findById(String id) {
+        return userRepository.findById(id)
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("User not found")))
+                .map(userMapper::toUserResponse);
     }
 
-    public Mono<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public Mono<UserResponse> findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("User not found")))
+                .map(userMapper::toUserResponse);
     }
 }

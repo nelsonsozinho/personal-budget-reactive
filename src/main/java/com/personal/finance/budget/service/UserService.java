@@ -9,6 +9,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class UserService {
@@ -19,10 +22,12 @@ public class UserService {
 
 
     public Mono<UserResponse> save(UserRequest userRequest) {
-        return Mono.just(userMapper.toUser(userRequest))
-                .flatMap(userRepository::save)
-                .map(userMapper::toUserResponse);
 
+        return userRepository.findByEmail(userRequest.getEmail())
+                .flatMap(__ -> Mono.error(new Exception(("No"))))
+                .switchIfEmpty(Mono.defer(() -> userRepository.save(userMapper.toUser(userRequest))))
+                .cast(User.class)
+                .map(userMapper::toUserResponse);
     }
 
     public Mono<Void> delete(String userId) {

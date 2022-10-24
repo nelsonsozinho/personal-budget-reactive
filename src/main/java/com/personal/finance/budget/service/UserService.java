@@ -2,6 +2,7 @@ package com.personal.finance.budget.service;
 
 import com.personal.finance.budget.controller.request.UserRequest;
 import com.personal.finance.budget.controller.response.UserResponse;
+import com.personal.finance.budget.exceptions.ResourceNotFoundException;
 import com.personal.finance.budget.mapper.UserMapper;
 import com.personal.finance.budget.model.User;
 import com.personal.finance.budget.repository.UserRepository;
@@ -24,7 +25,7 @@ public class UserService {
     public Mono<UserResponse> save(UserRequest userRequest) {
 
         return userRepository.findByEmail(userRequest.getEmail())
-                .flatMap(__ -> Mono.error(new Exception(("No"))))
+                .flatMap(__ -> Mono.error(new ResourceNotFoundException("User is already registered")))
                 .switchIfEmpty(Mono.defer(() -> userRepository.save(userMapper.toUser(userRequest))))
                 .cast(User.class)
                 .map(userMapper::toUserResponse);

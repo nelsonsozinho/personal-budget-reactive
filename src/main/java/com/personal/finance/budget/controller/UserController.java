@@ -4,12 +4,18 @@ import com.personal.finance.budget.controller.request.UserRequest;
 import com.personal.finance.budget.controller.response.UserResponse;
 import com.personal.finance.budget.model.User;
 import com.personal.finance.budget.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
+    private static final Logger LOG = LogManager.getLogger();
 
     private final UserService userService;
 
@@ -18,8 +24,11 @@ public class UserController {
     }
 
     @PostMapping
+    @ResponseStatus(value = HttpStatus.CREATED)
     public Mono<UserResponse> saveUser(@RequestBody UserRequest user) {
-        return userService.save(user);
+        LOG.info("Try to signing an user with email: [{}] ", user.getEmail());
+        return userService.save(user)
+                .doOnSuccess(cus -> LOG.info("User signing with success with email [{}]", user.getEmail()));
     }
 
     @GetMapping("/{id}")

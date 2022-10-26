@@ -9,7 +9,10 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    @Mapping(target = "enabled", expression = "java(Boolean.TRUE)")
+
+    @Mapping(target = "enabled", expression = "java(java.lang.Boolean.TRUE)")
+    @Mapping(target = "userId", ignore = true)
+    @Mapping(target = "budget", ignore = true)
     User toUser(UserRequest request);
 
     UserResponse toUserResponse(User user);

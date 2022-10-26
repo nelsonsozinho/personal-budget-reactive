@@ -1,5 +1,6 @@
 package com.personal.finance.budget.controller;
 
+import com.personal.finance.budget.controller.response.AccountResponse;
 import com.personal.finance.budget.model.Account;
 import com.personal.finance.budget.service.AccountService;
 import lombok.AllArgsConstructor;
@@ -24,12 +25,12 @@ public class AccountController {
     }
 
     @GetMapping("/cost-center/{id}")
-    public Flux<Account> listAccountsByCostCenter(@PathVariable("id") UUID costCenterId) {
+    public Flux<AccountResponse> listAccountsByCostCenter(@PathVariable("id") UUID costCenterId) {
         return accountService.listAccountByCostCenter(costCenterId);
     }
 
     @GetMapping("/budget/{id}")
-    public Flux<Account> listAccountsByBudget(@PathVariable("id") UUID budgetId) {
+    public Flux<AccountResponse> listAccountsByBudget(@PathVariable("id") UUID budgetId) {
         return accountService.listAccountByBudget(budgetId);
     }
 

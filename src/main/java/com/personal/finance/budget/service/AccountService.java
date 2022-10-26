@@ -1,5 +1,7 @@
 package com.personal.finance.budget.service;
 
+import com.personal.finance.budget.controller.response.AccountResponse;
+import com.personal.finance.budget.mapper.AccountMapper;
 import com.personal.finance.budget.model.Account;
 import com.personal.finance.budget.repository.AccountRepository;
 import lombok.AllArgsConstructor;
@@ -12,18 +14,22 @@ import java.util.UUID;
 @AllArgsConstructor
 public class AccountService {
 
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
+
+    private final AccountMapper accountMapper;
 
     public Flux<Account> listAccount() {
         return accountRepository.findAll();
     }
 
-    public Flux<Account> listAccountByCostCenter(UUID costCenterId) {
-        return accountRepository.findByCostCentersId(costCenterId);
+    public Flux<AccountResponse> listAccountByCostCenter(UUID costCenterId) {
+        return accountRepository.findByCostCentersId(costCenterId)
+                .map(accountMapper::toAccountResponse);
     }
 
-    public Flux<Account> listAccountByBudget(UUID budgetId) {
-        return accountRepository.findByBudgetId(budgetId);
+    public Flux<AccountResponse> listAccountByBudget(UUID budgetId) {
+        return accountRepository.findByBudgetId(budgetId)
+                .map(accountMapper::toAccountResponse);
     }
 
 }

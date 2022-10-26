@@ -15,8 +15,13 @@ public class CostCenter {
     @Id
     @Column("cost_center_id")
     private UUID id;
+
     private String name;
+
     private String description;
+
     private List<Account> accounts;
+
+    private Budget budget;
 
 }

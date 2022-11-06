@@ -38,7 +38,7 @@ public class UserController {
 
     @GetMapping("/email/{email}")
     public Mono<UserResponse> getUserByEmail(@PathVariable("email") String email) {
-        return userService.findByEmail(email);
+        return userService.reactiveFindByEmail(email);
     }
 
     @DeleteMapping("/{id}")

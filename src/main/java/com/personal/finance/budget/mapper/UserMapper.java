@@ -13,6 +13,11 @@ public interface UserMapper {
     @Mapping(target = "enabled", expression = "java(java.lang.Boolean.TRUE)")
     @Mapping(target = "userId", ignore = true)
     @Mapping(target = "budget", ignore = true)
+    @Mapping(target = "authorities", ignore = true)
+    @Mapping(target = "accountNonExpired", source="accountNonExpired", defaultValue = "true")
+    @Mapping(target = "accountNonLocked", source="accountNonLocked", defaultValue = "true")
+    @Mapping(target = "credentialsNotExpired", source="credentialsNotExpired", defaultValue = "true")
+    @Mapping(target = "roles", source = "roles")
     User toUser(UserRequest request);
 
     UserResponse toUserResponse(User user);

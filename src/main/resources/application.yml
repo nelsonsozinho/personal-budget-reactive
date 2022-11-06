@@ -2,6 +2,8 @@ server:
   port: 8080
   servlet:
     context-path: /budget
+    error:
+      include-stacktrace: on_trace_param
 
 logging:
   file:
@@ -19,3 +21,14 @@ spring:
     user: postgres
     password: postgres
     validate-on-migrate: true
+
+
+webflux-jwt:
+  password:
+    encoder:
+      secret: mysecret
+      iteration: 33
+      length: 256
+  jwt:
+    secret: ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave64ByteLength
+    expiration: 28800

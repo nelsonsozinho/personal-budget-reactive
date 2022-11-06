@@ -1,12 +1,15 @@
 package com.personal.finance.budget.service;
 
+import com.personal.finance.budget.config.security.PBKDF2Encoder;
 import com.personal.finance.budget.controller.request.UserRequest;
 import com.personal.finance.budget.controller.response.UserResponse;
 import com.personal.finance.budget.exceptions.ResourceNotFoundException;
 import com.personal.finance.budget.mapper.UserMapper;
 import com.personal.finance.budget.model.User;
+import com.personal.finance.budget.model.enumerator.Role;
 import com.personal.finance.budget.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -18,8 +21,12 @@ public class UserService {
 
     private final UserMapper userMapper;
 
+    private final PBKDF2Encoder encoder;
+
 
     public Mono<UserResponse> save(UserRequest userRequest) {
+        userRequest.setPassword(encoder.encode(userRequest.getPassword()));
+        userRequest.setRoles(Strings.isBlank(userRequest.getRoles()) ? Role.ROLE_USER.name() : userRequest.getRoles());
         return userRepository.findByEmail(userRequest.getEmail())
                 .flatMap(__ -> Mono.error(new ResourceNotFoundException("User is already registered")))
                 .switchIfEmpty(Mono.defer(() -> userRepository.save(userMapper.toUser(userRequest))))
@@ -39,9 +46,14 @@ public class UserService {
                 .map(userMapper::toUserResponse);
     }
 
-    public Mono<UserResponse> findByEmail(String email) {
+    public Mono<UserResponse> reactiveFindByEmail(String email) {
         return userRepository.findByEmail(email)
                 .switchIfEmpty(Mono.error(new ResourceNotFoundException("User not found")))
                 .map(userMapper::toUserResponse);
     }
+
+    public Mono<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
 }

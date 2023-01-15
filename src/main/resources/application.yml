@@ -1,0 +1,39 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /budget
+    error:
+      include-stacktrace: on_trace_param
+
+logging:
+  file:
+    name: /var/log/budget/budget-api.log
+  level:
+    root: INFO
+
+spring:
+  jackson:
+    date-format: "yyyy-MM-dd HH:mm:ss.SSS"
+    time-zone: "GMT+8"
+    serialization:
+      write-dates-as-timestamps: false
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/budget
+    username: postgres
+    password: postgres
+  flyway:
+    url: jdbc:postgresql://localhost:5432/budget
+    user: postgres
+    password: postgres
+    validate-on-migrate: true
+
+
+webflux-jwt:
+  password:
+    encoder:
+      secret: mysecret
+      iteration: 33
+      length: 256
+  jwt:
+    secret: ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave64ByteLength
+    expiration: 28800

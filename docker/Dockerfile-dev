@@ -1,0 +1,25 @@
+FROM openjdk:17-alpine
+
+LABEL maintainer="Shire42"
+
+USER root
+
+### Copiando app.jar para o Container ###
+COPY build/libs/budget-0.0.1-SNAPSHOT.jar app.jar
+
+### Configurando caminho do arquivo de log
+ENV LOG_FILE /var/log/shire42/budget/api.log
+
+### Criando pasta onde os logs serão armazenados ###
+RUN mkdir -p /var/log/shire42/budget
+RUN export PATH=$PATH:$JAVA_HOME/bin
+
+### Iniciando App.jar ###
+CMD $JAVA_HOME/bin/java -Dreactor.netty.pool.maxIdleTime=60 \
+  -Dreactor.netty.pool.maxLifeTime=300 \
+  -Dreactor.netty.pool.leasingStrategy=lifo \
+  -Dreactor.netty.http.server.accessLogEnabled=true \
+  -Djava.security.egd=file:/dev/./urandom \
+  -Xmx512m \
+  -Xms256m \
+  -jar app.jar

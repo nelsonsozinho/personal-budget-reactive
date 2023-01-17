@@ -10,6 +10,6 @@ public class PaymentRequest {
     private Double value;
     private String description;
 
-    private UUID accountId;
+    private UUID billId;
 
 }

@@ -8,12 +8,12 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.util.List;
 import java.util.UUID;
 
-@Table("account")
+@Table("bill")
 @Builder
 public class Bill {
 
     @Id
-    @Column("account_id")
+    @Column("bill_id")
     private UUID id;
 
     private String name;

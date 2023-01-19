@@ -1,5 +1,6 @@
 package com.personal.finance.budget.controller.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.relational.core.mapping.Column;
@@ -15,9 +16,12 @@ public class BudgetResponse {
 
     private Double total;
 
+    private Double paymentTotal;
+
     private String name;
 
     private String description;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<AccountResponse> accounts;
 }

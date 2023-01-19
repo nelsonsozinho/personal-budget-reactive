@@ -3,7 +3,6 @@ package com.personal.finance.budget.controller.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.relational.core.mapping.Column;
 
 import java.util.List;
 import java.util.UUID;

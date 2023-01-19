@@ -20,6 +20,7 @@ public interface BudgetMapper {
     BudgetPerformanceResponse toBudgetPerformanceResponse(BudgetPerformance budgetPerformance);
 
     @Mapping(target = "accounts", ignore = true)
+    @Mapping(target = "paymentTotal", defaultValue = "0.0")
     BudgetResponse toBudgetPerformanceResponse(BudgetPaymentTotal budgetPaymentTotal);
 
 

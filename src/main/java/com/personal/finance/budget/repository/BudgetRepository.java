@@ -18,9 +18,9 @@ public interface BudgetRepository  extends ReactiveCrudRepository<Budget, String
 
     @Query("select budget.budget_id, budget.name, budget.description, budget.total, sum(payment.value) payment_total\n" +
             "from budget, budget_user bu, cost_center cc\n" +
-            "inner join bill_cost_center as acc on acc.bill_id = acc.bill_id and acc.cost_center_id = cc.cost_center_id\n" +
-            "inner join bill on bill.bill_id = acc.bill_id\n" +
-            "inner join payment on payment.bill_id = bill.bill_id\n" +
+            "left join bill_cost_center as acc on acc.bill_id = acc.bill_id and acc.cost_center_id = cc.cost_center_id\n" +
+            "left join bill on bill.bill_id = acc.bill_id\n" +
+            "left join payment on payment.bill_id = bill.bill_id\n" +
             "where bu.user_id = :userId\n" +
             "and budget.user_id = bu.user_id\n" +
             "and cc.budget_id = budget.budget_id\n" +
